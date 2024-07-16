@@ -15,6 +15,15 @@ class LandingPage(View):
             'total_bags': total_bags,
             'supported_institutions': supported_institutions,
         }
+        foundations = Institution.objects.filter(type=Institution.FOUNDATION)
+        ngos = Institution.objects.filter(type=Institution.NGO)
+        local_collections = Institution.objects.filter(type=Institution.LOCAL_COLLECTION)
+
+        context = {
+            'foundations': foundations,
+            'ngos': ngos,
+            'local_collections': local_collections,
+        }
 
         return render(request, 'index.html', context)
 

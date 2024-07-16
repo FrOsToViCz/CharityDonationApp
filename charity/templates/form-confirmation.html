@@ -1,12 +1,24 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}Potwierdzenie{% endblock %}
 
-{% block header_content %}
-<div class="slogan container container--90">
-  <h2>
-    Dziękujemy za przesłanie formularza. Na maila prześlemy wszelkie
-    informacje o odbiorze.
-  </h2>
-</div>
+{% block header_class %}header--form-page{% endblock %}
+
+{% block nav_actions %}
+  <li class="logged-user">
+    Witaj Agata
+    <ul class="dropdown">
+      <li><a href="#">Profil</a></li>
+      <li><a href="#">Moje zbiórki</a></li>
+      <li><a href="#">Wyloguj</a></li>
+    </ul>
+  </li>
+{% endblock %}
+
+{% block slogan %}
+  <div class="slogan container container--90">
+    <h2>
+      Dziękujemy za przesłanie formularza Na maila prześlemy wszelkie informacje o odbiorze.
+    </h2>
+  </div>
 {% endblock %}

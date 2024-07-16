@@ -23,6 +23,7 @@ class Institution(models.Model):
         (NGO, 'organizacja pozarządowa'),
         (LOCAL_COLLECTION, 'zbiórka lokalna'),
     ]
+    type = models.CharField(max_length=100, choices=TYPE_CHOICES, default=FOUNDATION)
 
     def __str__(self):
         return self.name
