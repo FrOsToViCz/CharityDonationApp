@@ -11,15 +11,13 @@ class LandingPage(View):
         total_bags = Donation.objects.aggregate(Sum('quantity'))['quantity__sum'] or 0
         supported_institutions = Institution.objects.count()
 
-        context = {
-            'total_bags': total_bags,
-            'supported_institutions': supported_institutions,
-        }
         foundations = Institution.objects.filter(type=Institution.FOUNDATION)
         ngos = Institution.objects.filter(type=Institution.NGO)
         local_collections = Institution.objects.filter(type=Institution.LOCAL_COLLECTION)
 
         context = {
+            'total_bags': total_bags,
+            'supported_institutions': supported_institutions,
             'foundations': foundations,
             'ngos': ngos,
             'local_collections': local_collections,
