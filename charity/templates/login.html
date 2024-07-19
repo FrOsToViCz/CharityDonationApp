@@ -10,7 +10,7 @@
 {% block content %}
 <section class="login-page">
   <h2>Zaloguj się</h2>
-  <form method="post" action="{% url 'login' %}">
+  <form method="post" action="{% url 'login' %}{% if next %}?next={{ next }}{% endif %}">
     {% csrf_token %}
     <div class="form-group">
       <input type="email" name="email" placeholder="Email" />

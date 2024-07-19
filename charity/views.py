@@ -1,12 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
 
-from charity.models import Institution, Donation
+from charity.models import Institution, Donation, Category
 
 
 # Create your views here.
@@ -42,9 +44,15 @@ class LandingPage(View):
         return render(request, 'index.html', context)
 
 
-class AddDonation(View):
+class AddDonation(LoginRequiredMixin, View):
+    login_url = '/login/'
+
     def get(self, request):
-        return render(request, 'form.html')
+        categories = Category.objects.all()
+        context = {
+            'categories': categories,
+        }
+        return render(request, 'form.html', context)
 
 
 class Login(View):
