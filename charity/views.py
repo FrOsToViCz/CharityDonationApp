@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Sum
@@ -50,29 +51,39 @@ class Login(View):
     def get(self, request):
         return render(request, 'login.html')
 
+    def post(self, request):
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(request, username=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('landing-page')
+        else:
+            messages.error(request, 'Invalid email or password')
+            return redirect('login')
+
 
 class Register(View):
     def get(self, request):
         return render(request, 'register.html')
 
     def post(self, request):
-        name = request.POST.get('name')
-        surname = request.POST.get('surname')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        password2 = request.POST.get('password2')
+        name = request.POST['name']
+        surname = request.POST['surname']
+        email = request.POST['email']
+        password = request.POST['password']
+        password2 = request.POST['password2']
 
-        if password != password2:
+        if password == password2:
+            if User.objects.filter(username=email).exists():
+                messages.error(request, 'Email is already taken')
+                return redirect('register')
+            else:
+                user = User.objects.create_user(username=email, password=password, first_name=name, last_name=surname,
+                                                email=email)
+                user.save()
+                return redirect('login')
+        else:
             messages.error(request, 'Passwords do not match')
             return redirect('register')
-
-        if User.objects.filter(email=email).exists():
-            messages.error(request, 'Email already registered')
-            return redirect('register')
-
-        user = User.objects.create_user(user=email, email=email, password=password)
-        user.first_name = name
-        user.last_name = surname
-        user.save()
-
-        return redirect('login')

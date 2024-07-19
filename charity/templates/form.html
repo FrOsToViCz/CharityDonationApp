@@ -4,16 +4,7 @@
 
 {% block header_class %}header--form-page{% endblock %}
 
-{% block nav_actions %}
-  <li class="logged-user">
-    Witaj {{ User }}
-    <ul class="dropdown">
-      <li><a href="#">Profil</a></li>
-      <li><a href="#">Ustawienia</a></li>
-      <li><a href="#">Wyloguj</a></li>
-    </ul>
-  </li>
-{% endblock %}
+{% block nav_actions %}{{ block.super }}{% endblock %}
 
 {% block slogan %}
   <div class="slogan container container--90">

@@ -4,10 +4,7 @@
 
 {% block header_class %}header--main-page{% endblock %}
 
-{% block nav_actions %}
-  <li><a href="{% url 'login' %}" class="btn btn--small btn--without-border">Zaloguj</a></li>
-  <li><a href="{% url 'register' %}" class="btn btn--small btn--highlighted">Załóż konto</a></li>
-{% endblock %}
+{% block nav_actions %}{{ block.super }}{% endblock %}
 
 {% block slogan %}
   <div class="slogan container container--90">
