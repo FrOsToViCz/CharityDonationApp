@@ -18,6 +18,7 @@ class Institution(models.Model):
     FOUNDATION = 'fundacja'
     NGO = 'organizacja pozarządowa'
     LOCAL_COLLECTION = 'zbiórka lokalna'
+
     TYPE_CHOICES = [
         (FOUNDATION, 'fundacja'),
         (NGO, 'organizacja pozarządowa'),
@@ -26,7 +27,7 @@ class Institution(models.Model):
     type = models.CharField(max_length=100, choices=TYPE_CHOICES, default=FOUNDATION)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.get_type_display()}"
 
 
 class Donation(models.Model):
@@ -43,4 +44,4 @@ class Donation(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
-        return f'{self.quantity} dla {self.institution.name}'
+        return f'{self.quantity} bags for {self.institution.name}'

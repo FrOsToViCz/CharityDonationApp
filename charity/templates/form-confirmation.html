@@ -3,16 +3,8 @@
 {% block title %}Potwierdzenie{% endblock %}
 
 {% block header_class %}header--form-page{% endblock %}
-
 {% block nav_actions %}
-  <li class="logged-user">
-    Witaj Agata
-    <ul class="dropdown">
-      <li><a href="#">Profil</a></li>
-      <li><a href="#">Moje zbiórki</a></li>
-      <li><a href="#">Wyloguj</a></li>
-    </ul>
-  </li>
+    {{ block.super }}
 {% endblock %}
 
 {% block slogan %}
