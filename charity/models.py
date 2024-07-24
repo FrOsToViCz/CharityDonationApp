@@ -29,6 +29,10 @@ class Institution(models.Model):
     def __str__(self):
         return f"{self.name} - {self.get_type_display()}"
 
+    class Meta:
+        verbose_name = 'institution'
+        verbose_name_plural = 'institutions'
+
 
 class Donation(models.Model):
     quantity = models.IntegerField()

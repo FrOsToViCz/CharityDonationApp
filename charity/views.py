@@ -72,7 +72,8 @@ class AddDonation(LoginRequiredMixin, View):
         more_info = request.POST.get('more_info')
 
         if not (
-                bags and categories_ids and organization_id and address and city and postcode and phone and date and time):
+                bags and categories_ids and organization_id and address and city and
+                postcode and phone and date and time):
             return HttpResponseBadRequest("Missing required data")
 
         try:
@@ -146,3 +147,15 @@ class Register(View):
         else:
             messages.error(request, 'Passwords do not match')
             return redirect('register')
+
+
+class UserProfile(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        donations = Donation.objects.filter(user=request.user).select_related('institution').prefetch_related('categories')
+        context = {
+            'user': request.user,
+            'donations': donations,
+        }
+        return render(request, 'userProfile.html', context)
