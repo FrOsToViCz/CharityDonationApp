@@ -8,6 +8,8 @@
     <p><strong>Email: </strong>{{ user.email }}</p>
     
     <h3>Twoje darowizny</h3>
+    <form method="post">
+    {% csrf_token %}
         <table>
             <thead>
                 <tr>
@@ -16,11 +18,13 @@
                     <th>Kategorie</th>
                     <th>Data odbioru</th>
                     <th>Godzina odbioru</th>
+                    <th>Status</th>
+                    <th>Akcja</th>
                 </tr>
             </thead>
             <tbody>
                 {% for donation in donations %}
-                <tr>
+                <tr style="color: {% if donation.is_taken %}gray{% endif %};">
                     <td>{{ donation.quantity }}</td>
                     <td>{{ donation.institution.name }}</td>
                     <td>
@@ -30,13 +34,20 @@
                     </td>
                     <td>{{ donation.pick_up_date }}</td>
                     <td>{{ donation.pick_up_time }}</td>
+                    <td>{% if donation.is_taken %}Zabrane{% else %}Niezabrane{% endif %}</td>
+                    <td>
+                        <button type="submit" name="donation_id" value="{{ donation.id }}">
+                            {% if donation.is_taken %}Oznacz jako niezabrane{% else %}Oznacz jako zabrane{% endif %}
+                        </button>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5">Nie masz jeszcze żadnych darowizn.</td>
+                    <td colspan="7">Nie masz jeszcze żadnych darowizn.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </form>
 </div>
 {% endblock %}

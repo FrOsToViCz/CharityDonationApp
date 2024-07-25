@@ -159,3 +159,13 @@ class UserProfile(LoginRequiredMixin, View):
             'donations': donations,
         }
         return render(request, 'userProfile.html', context)
+
+    def post(self, request):
+        donation_id = request.POST['donation_id']
+        try:
+            donation = Donation.objects.get(pk=donation_id, user=request.user)
+            donation.is_taken = not donation.is_taken
+            donation.save()
+            return redirect('user-profile')
+        except Donation.DoesNotExist:
+            return HttpResponseBadRequest("Donation does not exist")
