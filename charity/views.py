@@ -9,7 +9,6 @@ from django.db.models import Sum
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.views import View
-
 from charity.forms import UserUpdateForm, CustomPasswordChangeForm
 from charity.models import Institution, Donation, Category
 import logging
@@ -44,9 +43,6 @@ class LandingPage(View):
             'ngos': ngos,
             'local_collections': local_collections,
         }
-
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            return render(request, 'partials/_pagination.html', context)
 
         return render(request, 'index.html', context)
 
