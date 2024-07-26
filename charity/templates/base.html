@@ -15,7 +15,7 @@
           {% block nav_actions %}
             {% if user.is_authenticated %}
               <li class="logged-user">
-                Witaj {{ user.username }}
+                Witaj {{ user.first_name }}
                 <ul class="dropdown">
                   <li><a href="{% url 'user-profile' %}">Profil</a></li>
                   <li><a href="{% url 'user-settings' %}">Ustawienia</a></li>
