@@ -98,7 +98,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Set the minimum attribute of the date input to today's date
     dateInput.setAttribute('min', today);
 
-
     /**
      * Form Select
      */

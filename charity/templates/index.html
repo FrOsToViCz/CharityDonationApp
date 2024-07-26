@@ -94,16 +94,16 @@
       {% endfor %}
     </ul>
     <ul class="help--slides-pagination" data-id="1">
-      {% if foundations.has_previous %}
-    <li><a href="?page_foundations={{ foundations.previous_page_number }}" data-page="{{ foundations.previous_page_number }}" class="btn btn--small btn--without-border">Poprzednia</a></li>
+    {% if foundations.has_previous %}
+    <li><a href="?page_foundations={{ foundations.previous_page_number }}" data-page="{{ foundations.previous_page_number }}" class="btn btn--small btn--without-border" ic-get-from="?page_foundations={{ foundations.previous_page_number }}" ic-target=".help--slides[data-id='1'] .help--slides-items">Poprzednia</a></li>
     {% endif %}
     {% for num in foundations.paginator.page_range %}
-    <li><a href="?page_foundations={{ num }}" data-page="{{ num }}" class="btn btn--small btn--without-border {% if foundations.number == num %}active{% endif %}">{{ num }}</a></li>
+    <li><a href="?page_foundations={{ num }}" data-page="{{ num }}" class="btn btn--small btn--without-border {% if foundations.number == num %}active{% endif %}" ic-get-from="?page_foundations={{ num }}" ic-target=".help--slides[data-id='1'] .help--slides-items">{{ num }}</a></li>
     {% endfor %}
     {% if foundations.has_next %}
-    <li><a href="?page_foundations={{ foundations.next_page_number }}" data-page="{{ foundations.next_page_number }}" class="btn btn--small btn--without-border">Następna</a></li>
+    <li><a href="?page_foundations={{ foundations.next_page_number }}" data-page="{{ foundations.next_page_number }}" class="btn btn--small btn--without-border" ic-get-from="?page_foundations={{ foundations.next_page_number }}" ic-target=".help--slides[data-id='1'] .help--slides-items">Następna</a></li>
     {% endif %}
-    </ul>
+</ul>
   </div>
 
   <!-- SLIDE 2 -->
@@ -127,16 +127,16 @@
       {% endfor %}
     </ul>
     <ul class="help--slides-pagination" data-id="2">
-      {% if ngos.has_previous %}
-    <li><a href="?page_ngos={{ ngos.previous_page_number }}" data-page="{{ ngos.previous_page_number }}" class="btn btn--small btn--without-border">Poprzednia</a></li>
+    {% if ngos.has_previous %}
+    <li><a href="?page_ngos={{ ngos.previous_page_number }}" data-page="{{ ngos.previous_page_number }}" class="btn btn--small btn--without-border" ic-get-from="?page_ngos={{ ngos.previous_page_number }}" ic-target=".help--slides[data-id='2'] .help--slides-items">Poprzednia</a></li>
     {% endif %}
     {% for num in ngos.paginator.page_range %}
-    <li><a href="?page_ngos={{ num }}" data-page="{{ num }}" class="btn btn--small btn--without-border {% if ngos.number == num %}active{% endif %}">{{ num }}</a></li>
+    <li><a href="?page_ngos={{ num }}" data-page="{{ num }}" class="btn btn--small btn--without-border {% if ngos.number == num %}active{% endif %}" ic-get-from="?page_ngos={{ num }}" ic-target=".help--slides[data-id='2'] .help--slides-items">{{ num }}</a></li>
     {% endfor %}
     {% if ngos.has_next %}
-    <li><a href="?page_ngos={{ ngos.next_page_number }}" data-page="{{ ngos.next_page_number }}" class="btn btn--small btn--without-border">Następna</a></li>
+    <li><a href="?page_ngos={{ ngos.next_page_number }}" data-page="{{ ngos.next_page_number }}" class="btn btn--small btn--without-border" ic-get-from="?page_ngos={{ ngos.next_page_number }}" ic-target=".help--slides[data-id='2'] .help--slides-items">Następna</a></li>
     {% endif %}
-    </ul>
+</ul>
   </div>
 
   <!-- SLIDE 3 -->
@@ -160,16 +160,18 @@
       {% endfor %}
     </ul>
     <ul class="help--slides-pagination" data-id="3">
-      {% if local_collections.has_previous %}
-    <li><a href="?page_local_collections={{ local_collections.previous_page_number }}" data-page="{{ local_collections.previous_page_number }}" class="btn btn--small btn--without-border">Poprzednia</a></li>
+    {% if local_collections.has_previous %}
+    <li><a href="?page_local_collections={{ local_collections.previous_page_number }}" data-page="{{ local_collections.previous_page_number }}" class="btn btn--small btn--without-border" ic-get-from="?page_local_collections={{ local_collections.previous_page_number }}" ic-target=".help--slides[data-id='3'] .help--slides-items">Poprzednia</a></li>
     {% endif %}
     {% for num in local_collections.paginator.page_range %}
-    <li><a href="?page_local_collections={{ num }}" data-page="{{ num }}" class="btn btn--small btn--without-border {% if local_collections.number == num %}active{% endif %}">{{ num }}</a></li>
+    <li><a href="?page_local_collections={{ num }}" data-page="{{ num }}" class="btn btn--small btn--without-border {% if local_collections.number == num %}active{% endif %}" ic-get-from="?page_local_collections={{ num }}" ic-target=".help--slides[data-id='3'] .help--slides-items">{{ num }}</a></li>
     {% endfor %}
     {% if local_collections.has_next %}
-    <li><a href="?page_local_collections={{ local_collections.next_page_number }}" data-page="{{ local_collections.next_page_number }}" class="btn btn--small btn--without-border">Następna</a></li>
+    <li><a href="?page_local_collections={{ local_collections.next_page_number }}" data-page="{{ local_collections.next_page_number }}" class="btn btn--small btn--without-border" ic-get-from="?page_local_collections={{ local_collections.next_page_number }}" ic-target=".help--slides[data-id='3'] .help--slides-items">Następna</a></li>
     {% endif %}
-    </ul>
+</ul>
   </div>
 </section>
 {% endblock %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intercooler-js/1.2.2/intercooler.min.js"></script>

@@ -1,6 +1,7 @@
 import json
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
@@ -8,7 +9,10 @@ from django.db.models import Sum
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.views import View
+
+from charity.forms import UserUpdateForm, CustomPasswordChangeForm
 from charity.models import Institution, Donation, Category
+import logging
 
 
 # Create your views here.
@@ -40,6 +44,9 @@ class LandingPage(View):
             'ngos': ngos,
             'local_collections': local_collections,
         }
+
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return render(request, 'partials/_pagination.html', context)
 
         return render(request, 'index.html', context)
 
@@ -153,7 +160,8 @@ class UserProfile(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def get(self, request):
-        donations = Donation.objects.filter(user=request.user).select_related('institution').prefetch_related('categories')
+        donations = (Donation.objects.filter(user=request.user).select_related('institution')
+                     .prefetch_related('categories'))
         context = {
             'user': request.user,
             'donations': donations,
@@ -161,7 +169,7 @@ class UserProfile(LoginRequiredMixin, View):
         return render(request, 'userProfile.html', context)
 
     def post(self, request):
-        donation_id = request.POST['donation_id']
+        donation_id = request.POST.get('donation_id')
         try:
             donation = Donation.objects.get(pk=donation_id, user=request.user)
             donation.is_taken = not donation.is_taken
@@ -169,3 +177,45 @@ class UserProfile(LoginRequiredMixin, View):
             return redirect('user-profile')
         except Donation.DoesNotExist:
             return HttpResponseBadRequest("Donation does not exist")
+
+
+class UserSettings(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        form = UserUpdateForm(instance=request.user)
+        return render(request, 'user_settings.html', {'form': form})
+
+    def post(self, request):
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            logging.debug("Form is valid")
+            form.save()
+            messages.success(request, 'Dane zostały zaktualizowane.')
+            return redirect('user-settings')
+        else:
+            logging.debug("Form is invalid")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    logging.debug(f"Error in {field}: {error}")
+            messages.error(request, 'Proszę poprawić poniższe błędy.')
+        return render(request, 'user_settings.html', {'form': form})
+
+
+class ChangePassword(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        form = CustomPasswordChangeForm(user=request.user)
+        return render(request, 'change_password.html', {'form': form})
+
+    def post(self, request):
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Twoje hasło zostało pomyślnie zmienione.')
+            return redirect('user-settings')
+        else:
+            messages.error(request, 'Proszę poprawić poniższe błędy.')
+        return render(request, 'change_password.html', {'form': form})
