@@ -1911,7 +1911,7 @@ footer .bottom-line--icons a img {
 }
 
 .user-profile-page {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   text-align: center;
@@ -1931,12 +1931,8 @@ footer .bottom-line--icons a img {
   font-size: 1.75rem;
 }
 
-.table-responsive {
-  overflow-x: auto;
-}
-
 .table {
-  width: 100%;
+  width: 105%;
   margin-bottom: 20px;
   border-collapse: collapse;
 }
@@ -1946,6 +1942,7 @@ footer .bottom-line--icons a img {
   padding: 15px;
   border: 3px solid #ddd;
   text-align: left;
+  font-size: 12px;
 }
 
 .table th {
@@ -1965,6 +1962,6 @@ footer .bottom-line--icons a img {
 }
 
 .btn--small {
-  padding: 5px 10px;
-  font-size: 0.875rem;
+  padding: 5px 2px;
+  font-size: 1.3rem;
 }

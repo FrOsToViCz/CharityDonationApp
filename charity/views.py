@@ -157,7 +157,8 @@ class UserProfile(LoginRequiredMixin, View):
 
     def get(self, request):
         donations = (Donation.objects.filter(user=request.user).select_related('institution')
-                     .prefetch_related('categories'))
+                     .prefetch_related('categories')
+                     .order_by('is_taken', 'pick_up_date'))
         context = {
             'user': request.user,
             'donations': donations,

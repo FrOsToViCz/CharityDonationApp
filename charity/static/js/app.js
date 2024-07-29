@@ -30,10 +30,15 @@ document.addEventListener("DOMContentLoaded", function () {
              */
             this.$el.addEventListener("click", e => {
                 if (e.target.classList.contains("btn") && e.target.parentElement.parentElement.classList.contains("help--slides-pagination")) {
-                    this.changePage(e);
-                }
-            });
-        }
+                e.preventDefault();
+                this.changePage(e).then(() => {
+                // Optional: Do something after the page has changed
+                }).catch(error => {
+                    console.error('Error changing page:', error);
+                });
+            }
+        });
+}
 
         changeSlide(e) {
             e.preventDefault();
@@ -56,32 +61,44 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        changePage(e) {
-            e.preventDefault();
+        async changePage(e) {
             const $btn = e.target;
             const page = $btn.dataset.page;
             const listType = $btn.closest(".pagination").dataset.list;
 
-            fetch(`?page_${listType}=${page}`)
-                .then(response => response.text())
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
+            // Disable pagination buttons
+            this.togglePaginationButtons(listType, false);
 
-                    // Update the corresponding list
-                    const newContent = doc.querySelector(`.help--slides[data-id="${this.currentSlide}"] .help--slides-items`);
-                    const newPagination = doc.querySelector(`.pagination[data-list="${listType}"] .help--slides-pagination`);
+            try {
+                const response = await fetch(`?page_${listType}=${page}`);
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
 
-                    const currentContent = this.$el.querySelector(`.help--slides[data-id="${this.currentSlide}"] .help--slides-items`);
-                    const currentPagination = this.$el.querySelector(`.pagination[data-list="${listType}"] .help--slides-pagination`);
+                const newContent = doc.querySelector(`.help--slides[data-id="${this.currentSlide}"] .help--slides-items`);
+                const newPagination = doc.querySelector(`.pagination[data-list="${listType}"] .help--slides-pagination`);
 
-                    currentContent.innerHTML = newContent.innerHTML;
-                    currentPagination.innerHTML = newPagination.innerHTML;
+                const currentContent = this.$el.querySelector(`.help--slides[data-id="${this.currentSlide}"] .help--slides-items`);
+                const currentPagination = this.$el.querySelector(`.pagination[data-list="${listType}"] .help--slides-pagination`);
 
-                    // Reattach events after replacing content
-                    this.events();
-                })
-                .catch(error => console.error('Error loading new page:', error));
+                currentContent.innerHTML = newContent.innerHTML;
+                currentPagination.innerHTML = newPagination.innerHTML;
+
+                // Reattach events after replacing content
+                this.events();
+            } catch (error) {
+                console.error('Error loading new page:', error);
+            }
+
+            // Enable pagination buttons
+            this.togglePaginationButtons(listType, true);
+        }
+
+        togglePaginationButtons(listType, enable) {
+            const paginationButtons = this.$el.querySelectorAll(`.pagination[data-list="${listType}"] .btn`);
+            paginationButtons.forEach(btn => {
+                btn.disabled = !enable;
+            });
         }
     }
 
